@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Moving Krew — Utah Moving Labor</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+:root{
+  --kraft:#C9A876;
+  --kraft-dark:#A9895D;
+  --ink:#1C1A17;
+  --ink-soft:#332F29;
+  --orange:#E8622C;
+  --orange-dark:#C24E1F;
+  --paper:#F5F1E8;
+  --paper-dim:#EDE6D6;
+  --blanket:#4A4642;
+  --line: rgba(28,26,23,0.18);
+  --line-strong: rgba(28,26,23,0.32);
+  --white:#FFFDF9;
+  --success:#3B6D11;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Archivo', sans-serif;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{
+  font-family:'Oswald', sans-serif;
+  text-transform:uppercase;
+  letter-spacing:0.02em;
+  color:var(--ink);
+  line-height:1.05;
+}
+a{color:inherit; text-decoration:none;}
+img{max-width:100%; display:block;}
+button{font-family:inherit; cursor:pointer;}
+.wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+.eyebrow{
+  font-family:'Oswald',sans-serif;
+  font-size:12.5px;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--orange-dark);
+  font-weight:600;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+.eyebrow::before{
+  content:'';
+  width:18px; height:2px;
+  background:var(--orange-dark);
+  display:inline-block;
+}
+
+/* stamp / ticket texture helpers */
+.dashed{border:1.5px dashed var(--line-strong);}
+.stamp{
+  display:inline-flex; align-items:center; gap:6px;
+  border:2px solid var(--ink);
+  border-radius:3px;
+  padding:4px 10px;
+  font-family:'Oswald',sans-serif;
+  font-size:11px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  transform:rotate(-2deg);
+  font-weight:600;
+}
+
+/* ===== HEADER ===== */
+header{
+  position:sticky; top:0; z-index:100;
+  background:var(--paper);
+  border-bottom:2px solid var(--ink);
+}
+.nav-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 32px;
+  max-width:1180px; margin:0 auto;
+}
+.logo{
+  display:flex; align-items:center; gap:10px;
+  font-family:'Oswald',sans-serif;
+  font-weight:700;
+  font-size:20px;
+  letter-spacing:0.01em;
+  text-transform:uppercase;
+}
+.logo-mark{
+  width:38px; height:38px;
+  background:var(--ink);
+  color:var(--paper);
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; font-weight:700;
+  border-radius:2px;
+  flex-shrink:0;
+}
+.logo .sub{
+  display:block;
+  font-family:'Archivo',sans-serif;
+  font-size:9.5px;
+  letter-spacing:0.16em;
+  color:var(--blanket);
+  font-weight:600;
+  text-transform:uppercase;
+}
+nav ul{
+  list-style:none;
+  display:flex;
+  gap:32px;
+  align-items:center;
+}
+nav a{
+  font-family:'Oswald',sans-serif;
+  font-size:13.5px;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  font-weight:500;
+  padding:6px 0;
+  border-bottom:2px solid transparent;
+  transition:border-color .15s ease, color .15s ease;
+}
+nav a:hover{border-color:var(--orange);}
+.nav-cta{
+  background:var(--orange);
+  color:var(--white) !important;
+  padding:10px 20px !important;
+  border-radius:2px;
+  border-bottom:none !important;
+}
+.nav-cta:hover{background:var(--orange-dark); border-color:transparent !important;}
+.nav-phone{display:flex; align-items:center; gap:20px;}
+.phone-link{
+  font-family:'Oswald',sans-serif;
+  font-weight:600;
+  font-size:14.5px;
+  letter-spacing:0.02em;
+  display:none;
+}
+.mobile-toggle{display:none; background:none; border:none; font-size:26px; color:var(--ink);}
+
+@media(max-width:920px){
+  nav ul{display:none;}
+  .mobile-toggle{display:block;}
+}
+@media(min-width:640px){
+  .phone-link{display:inline;}
+}
+
+/* mobile nav drawer */
+.mobile-nav{
+  display:none;
+  position:fixed; inset:0; top:70px;
+  background:var(--paper);
+  z-index:99;
+  border-top:2px solid var(--ink);
+  padding:24px 32px;
+}
+.mobile-nav.open{display:block;}
+.mobile-nav ul{list-style:none; display:flex; flex-direction:column; gap:22px;}
+.mobile-nav a{
+  font-family:'Oswald',sans-serif; font-size:20px; text-transform:uppercase; letter-spacing:0.03em; font-weight:600;
+}
+
+/* ===== HERO ===== */
+.hero{
+  padding:64px 0 0;
+  background:
+    repeating-linear-gradient(135deg, rgba(28,26,23,0.025) 0px, rgba(28,26,23,0.025) 2px, transparent 2px, transparent 14px),
+    var(--paper);
+  position:relative;
+  overflow:hidden;
+}
+.hero-inner{
+  display:grid;
+  grid-template-columns:1.05fr 0.95fr;
+  gap:56px;
+  align-items:center;
+  padding-bottom:64px;
+}
+.hero h1{
+  font-size:clamp(40px,6vw,68px);
+  margin:18px 0 20px;
+}
+.hero h1 .hl{color:var(--orange);}
+.hero p.lede{
+  font-size:18px;
+  color:var(--ink-soft);
+  max-width:480px;
+  margin-bottom:30px;
+}
+.hero-badges{
+  display:flex; gap:14px; flex-wrap:wrap;
+  margin-bottom:34px;
+}
+.badge-row{
+  display:flex; align-items:center; gap:8px;
+  font-size:13px; font-weight:600; color:var(--ink-soft);
+}
+.badge-row svg{flex-shrink:0;}
+.hero-ctas{display:flex; gap:14px; flex-wrap:wrap;}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  font-family:'Oswald',sans-serif;
+  text-transform:uppercase;
+  font-weight:600;
+  letter-spacing:0.05em;
+  font-size:14.5px;
+  padding:15px 28px;
+  border-radius:2px;
+  border:2px solid var(--ink);
+  transition:transform .12s ease, background .15s ease, color .15s ease;
+}
+.btn-primary{background:var(--orange); color:var(--white); border-color:var(--orange);}
+.btn-primary:hover{background:var(--orange-dark); border-color:var(--orange-dark); transform:translateY(-2px);}
+.btn-secondary{background:transparent; color:var(--ink);}
+.btn-secondary:hover{background:var(--ink); color:var(--paper); transform:translateY(-2px);}
+
+/* the ticket - signature element */
+.ticket{
+  background:var(--white);
+  border:2px solid var(--ink);
+  border-radius:4px;
+  padding:0;
+  position:relative;
+  box-shadow:8px 8px 0 rgba(28,26,23,0.14);
+  transform:rotate(1.2deg);
+}
+.ticket-head{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:16px 22px;
+  border-bottom:2px dashed var(--line-strong);
+  background:var(--paper-dim);
+}
+.ticket-head .t-label{
+  font-family:'Oswald',sans-serif; font-weight:700; font-size:13px; letter-spacing:0.1em; text-transform:uppercase;
+}
+.ticket-num{font-size:11.5px; color:var(--blanket); font-weight:600;}
+.ticket-body{padding:22px;}
+.ticket-row{margin-bottom:16px;}
+.ticket-row label{
+  display:block;
+  font-family:'Oswald',sans-serif;
+  font-size:11px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--blanket);
+  font-weight:600;
+  margin-bottom:6px;
+}
+.ticket-row input, .ticket-row select{
+  width:100%;
+  border:1.5px solid var(--line-strong);
+  background:var(--paper);
+  padding:11px 12px;
+  font-family:'Archivo',sans-serif;
+  font-size:14.5px;
+  border-radius:2px;
+  color:var(--ink);
+}
+.ticket-row input:focus, .ticket-row select:focus{
+  outline:none; border-color:var(--orange);
+  background:var(--white);
+}
+.ticket-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+.ticket-estimate{
+  margin-top:6px;
+  border-top:2px dashed var(--line-strong);
+  padding-top:16px;
+  display:flex; justify-content:space-between; align-items:baseline;
+}
+.ticket-estimate .num{
+  font-family:'Oswald',sans-serif;
+  font-size:32px; font-weight:700; color:var(--orange-dark);
+}
+.ticket-estimate .lbl{font-size:12px; color:var(--blanket); font-weight:600; text-transform:uppercase; letter-spacing:.08em;}
+.ticket-foot{
+  padding:16px 22px;
+  border-top:2px solid var(--ink);
+  background:var(--ink);
+}
+.ticket-foot button{
+  width:100%;
+  background:var(--orange);
+  color:var(--white);
+  border:none;
+  padding:13px;
+  font-family:'Oswald',sans-serif;
+  font-weight:600;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  font-size:14px;
+  border-radius:2px;
+}
+.ticket-foot button:hover{background:var(--orange-dark);}
+.perforation{
+  position:absolute; left:-2px; right:-2px; top:66px;
+  height:0; border-top:none;
+}
+
+@media(max-width:920px){
+  .hero-inner{grid-template-columns:1fr; padding-bottom:40px;}
+  .ticket{transform:none; margin-top:8px;}
+}
+
+/* ===== TRUST STRIP ===== */
+.trust-strip{
+  background:var(--ink);
+  color:var(--paper);
+  padding:14px 0;
+  overflow:hidden;
+  border-bottom:2px solid var(--ink);
+}
+.trust-track{
+  display:flex; gap:56px;
+  white-space:nowrap;
+  animation:scroll 26s linear infinite;
+  width:max-content;
+}
+.trust-track span{
+  font-family:'Oswald',sans-serif;
+  font-size:13px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  font-weight:500;
+  opacity:0.88;
+}
+@keyframes scroll{
+  from{transform:translateX(0);}
+  to{transform:translateX(-50%);}
+}
+@media(prefers-reduced-motion: reduce){
+  .trust-track{animation:none;}
+}
+
+/* ===== SECTION SHARED ===== */
+section{padding:88px 0;}
+.section-head{
+  max-width:640px;
+  margin-bottom:52px;
+}
+.section-head h2{
+  font-size:clamp(30px,4vw,42px);
+  margin-top:14px;
+}
+.section-head p{
+  color:var(--ink-soft);
+  font-size:16.5px;
+  margin-top:14px;
+}
+
+/* ===== SERVICES ===== */
+.services{background:var(--paper);}
+.svc-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:2px;
+  background:var(--ink);
+  border:2px solid var(--ink);
+}
+.svc-card{
+  background:var(--white);
+  padding:32px 28px;
+  transition:background .15s ease;
+}
+.svc-card:hover{background:var(--paper-dim);}
+.svc-icon{
+  width:46px; height:46px;
+  border:2px solid var(--ink);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:18px;
+  color:var(--orange-dark);
+}
+.svc-card h3{font-size:18px; margin-bottom:10px;}
+.svc-card p{font-size:14.5px; color:var(--ink-soft);}
+@media(max-width:860px){
+  .svc-grid{grid-template-columns:1fr;}
+}
+
+/* ===== PROCESS ===== */
+.process{background:var(--ink); color:var(--paper);}
+.process .eyebrow{color:var(--orange);}
+.process .section-head h2{color:var(--paper);}
+.process .section-head p{color:rgba(245,241,232,0.72);}
+.process-list{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+  border-top:1px solid rgba(245,241,232,0.25);
+}
+.proc-item{
+  padding:28px 24px 28px 0;
+  border-right:1px solid rgba(245,241,232,0.25);
+  position:relative;
+}
+.proc-item:last-child{border-right:none;}
+.proc-num{
+  font-family:'Oswald',sans-serif;
+  font-size:13px;
+  color:var(--orange);
+  font-weight:700;
+  letter-spacing:0.06em;
+  margin-bottom:14px;
+  display:block;
+}
+.proc-item h3{font-size:17px; color:var(--paper); margin-bottom:10px;}
+.proc-item p{font-size:14px; color:rgba(245,241,232,0.68);}
+@media(max-width:860px){
+  .process-list{grid-template-columns:1fr; border-top:none;}
+  .proc-item{border-right:none; border-bottom:1px solid rgba(245,241,232,0.25); padding:24px 0;}
+}
+
+/* ===== PRICING ===== */
+.pricing{background:var(--paper-dim);}
+.price-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+}
+.price-card{
+  background:var(--white);
+  border:2px solid var(--ink);
+  border-radius:4px;
+  padding:30px 26px;
+  position:relative;
+}
+.price-card.featured{
+  border-color:var(--orange);
+  box-shadow:6px 6px 0 rgba(232,98,44,0.18);
+}
+.price-tag{
+  position:absolute; top:-14px; right:24px;
+  background:var(--orange); color:var(--white);
+  font-family:'Oswald',sans-serif; font-size:11px; font-weight:700;
+  letter-spacing:0.08em; text-transform:uppercase;
+  padding:5px 12px; border-radius:2px;
+}
+.price-card h3{font-size:20px; margin-bottom:6px;}
+.price-card .price-crew{font-size:13px; color:var(--blanket); font-weight:600; margin-bottom:18px;}
+.price-card .price-num{
+  font-family:'Oswald',sans-serif;
+  font-size:38px; font-weight:700; color:var(--ink);
+  margin-bottom:2px;
+}
+.price-card .price-num span{font-size:15px; font-weight:500; color:var(--blanket); text-transform:none;}
+.price-card ul{list-style:none; margin:22px 0 26px; display:flex; flex-direction:column; gap:11px;}
+.price-card li{font-size:14px; display:flex; gap:9px; align-items:flex-start; color:var(--ink-soft);}
+.price-card li svg{flex-shrink:0; margin-top:2px; color:var(--success);}
+.price-card .btn{width:100%;}
+@media(max-width:860px){
+  .price-grid{grid-template-columns:1fr;}
+}
+
+/* ===== TESTIMONIALS ===== */
+.testimonials{background:var(--paper);}
+.test-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+}
+.test-card{
+  background:var(--white);
+  border:1.5px solid var(--line);
+  border-radius:4px;
+  padding:26px;
+}
+.test-stars{color:var(--orange); font-size:14px; margin-bottom:14px; letter-spacing:2px;}
+.test-card p{font-size:14.5px; color:var(--ink-soft); margin-bottom:18px; font-style:italic;}
+.test-name{font-family:'Oswald',sans-serif; font-weight:600; font-size:14px;}
+.test-loc{font-size:12.5px; color:var(--blanket);}
+@media(max-width:860px){
+  .test-grid{grid-template-columns:1fr;}
+}
+
+/* ===== SERVICE AREA ===== */
+.area{background:var(--ink); color:var(--paper); padding:60px 0;}
+.area-inner{
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:24px;
+}
+.area h2{color:var(--paper); font-size:26px;}
+.area-cities{
+  display:flex; flex-wrap:wrap; gap:10px 22px;
+  max-width:640px;
+}
+.area-cities span{
+  font-size:13.5px; color:rgba(245,241,232,0.78);
+  font-family:'Oswald',sans-serif; letter-spacing:0.03em;
+}
+
+/* ===== CONTACT ===== */
+.contact{background:var(--paper-dim);}
+.contact-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:56px;
+  align-items:start;
+}
+.contact-info h2{font-size:clamp(28px,4vw,38px); margin:14px 0 18px;}
+.contact-info p{color:var(--ink-soft); margin-bottom:28px; max-width:420px;}
+.info-row{
+  display:flex; align-items:flex-start; gap:14px;
+  margin-bottom:22px;
+}
+.info-row .ic{
+  width:38px; height:38px; border-radius:50%;
+  border:2px solid var(--ink);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; color:var(--orange-dark);
+}
+.info-row .lbl{font-family:'Oswald',sans-serif; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--blanket); font-weight:600; margin-bottom:2px;}
+.info-row .val{font-size:15.5px; font-weight:500;}
+
+.form-card{
+  background:var(--white);
+  border:2px solid var(--ink);
+  border-radius:4px;
+  padding:32px;
+}
+.form-card h3{font-size:19px; margin-bottom:22px;}
+.f-row{margin-bottom:16px;}
+.f-row-2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+.f-row label{
+  display:block; font-family:'Oswald',sans-serif; font-size:11px; letter-spacing:0.08em;
+  text-transform:uppercase; color:var(--blanket); font-weight:600; margin-bottom:6px;
+}
+.f-row input, .f-row select, .f-row textarea{
+  width:100%; border:1.5px solid var(--line-strong); background:var(--paper);
+  padding:11px 12px; font-family:'Archivo',sans-serif; font-size:14.5px; border-radius:2px; color:var(--ink);
+}
+.f-row textarea{resize:vertical; min-height:90px;}
+.f-row input:focus, .f-row select:focus, .f-row textarea:focus{
+  outline:none; border-color:var(--orange); background:var(--white);
+}
+.f-error{color:var(--orange-dark); font-size:12.5px; margin-top:5px; display:none; font-weight:600;}
+.f-row.invalid input, .f-row.invalid select, .f-row.invalid textarea{border-color:var(--orange-dark);}
+.f-row.invalid .f-error{display:block;}
+.form-submit{
+  width:100%; background:var(--orange); color:var(--white); border:none;
+  padding:14px; font-family:'Oswald',sans-serif; font-weight:600; letter-spacing:0.06em;
+  text-transform:uppercase; font-size:14.5px; border-radius:2px; margin-top:4px;
+}
+.form-submit:hover{background:var(--orange-dark);}
+.form-success{
+  display:none;
+  background:#EAF3DE; border:1.5px solid var(--success); color:#27500A;
+  padding:16px; border-radius:2px; font-size:14px; font-weight:500;
+  align-items:center; gap:10px;
+}
+.form-success.show{display:flex;}
+.form-card.submitted .f-row, .form-card.submitted .form-submit{display:none;}
+
+@media(max-width:920px){
+  .contact-grid{grid-template-columns:1fr;}
+}
+
+/* ===== FAQ ===== */
+.faq{background:var(--paper);}
+.faq-list{max-width:800px;}
+.faq-item{
+  border-bottom:1.5px solid var(--line);
+}
+.faq-q{
+  width:100%;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:22px 0;
+  background:none; border:none;
+  text-align:left;
+  font-family:'Oswald',sans-serif;
+  font-size:16.5px; font-weight:500; color:var(--ink);
+}
+.faq-q .plus{
+  font-size:22px; color:var(--orange-dark); flex-shrink:0; margin-left:20px;
+  transition:transform .2s ease;
+  font-weight:400;
+}
+.faq-item.open .faq-q .plus{transform:rotate(45deg);}
+.faq-a{
+  max-height:0; overflow:hidden;
+  transition:max-height .25s ease;
+}
+.faq-item.open .faq-a{max-height:220px;}
+.faq-a p{padding-bottom:22px; color:var(--ink-soft); font-size:14.5px; max-width:620px;}
+
+/* ===== FOOTER ===== */
+footer{background:var(--ink); color:var(--paper); padding:64px 0 28px;}
+.foot-grid{
+  display:grid;
+  grid-template-columns:1.4fr 1fr 1fr 1fr;
+  gap:40px;
+  padding-bottom:40px;
+  border-bottom:1px solid rgba(245,241,232,0.2);
+}
+.foot-logo{
+  display:flex; align-items:center; gap:10px;
+  font-family:'Oswald',sans-serif; font-weight:700; font-size:19px; text-transform:uppercase;
+  margin-bottom:14px;
+}
+.foot-logo .logo-mark{background:var(--orange);}
+.foot-col p{color:rgba(245,241,232,0.65); font-size:14px; max-width:280px;}
+.foot-col h4{
+  font-size:12.5px; letter-spacing:0.1em; text-transform:uppercase; color:rgba(245,241,232,0.9);
+  margin-bottom:16px; font-weight:600;
+}
+.foot-col ul{list-style:none; display:flex; flex-direction:column; gap:11px;}
+.foot-col a{color:rgba(245,241,232,0.68); font-size:14px;}
+.foot-col a:hover{color:var(--orange);}
+.foot-bottom{
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;
+  padding-top:24px;
+  font-size:13px; color:rgba(245,241,232,0.5);
+}
+@media(max-width:860px){
+  .foot-grid{grid-template-columns:1fr 1fr; gap:32px;}
+}
+@media(max-width:520px){
+  .foot-grid{grid-template-columns:1fr;}
+}
+
+/* toast */
+.toast{
+  position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px);
+  background:var(--ink); color:var(--paper);
+  padding:14px 24px; border-radius:3px;
+  font-family:'Oswald',sans-serif; font-size:13.5px; font-weight:500; letter-spacing:0.02em;
+  opacity:0; pointer-events:none;
+  transition:opacity .25s ease, transform .25s ease;
+  z-index:200;
+  display:flex; align-items:center; gap:10px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.25);
+}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto;}
+
+/* reveal on scroll */
+.reveal{opacity:0; transform:translateY(18px); transition:opacity .5s ease, transform .5s ease;}
+.reveal.in{opacity:1; transform:translateY(0);}
+
+::selection{background:var(--orange); color:var(--white);}
+
+@media(max-width:640px){
+  section{padding:56px 0;}
+  .wrap{padding:0 20px;}
+  .nav-inner{padding:14px 20px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="#top" class="logo">
+      <span class="logo-mark">TK</span>
+      <span>The Moving Krew<span class="sub">Utah &middot; Licensed &amp; Insured</span></span>
+    </a>
+    <nav>
+      <ul>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#contact" class="nav-cta">Get a quote</a></li>
+      </ul>
+    </nav>
+    <div class="nav-phone">
+      <a href="tel:13853926973" class="phone-link">(385) 392-6973</a>
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Open menu">&#9776;</button>
+    </div>
+  </div>
+  <div class="mobile-nav" id="mobileNav">
+    <ul>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#contact">Get a quote</a></li>
+      <li><a href="tel:13853926973">(385) 392-6973</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" style="padding-top:64px;">
+    <div class="wrap">
+      <div class="hero-inner">
+        <div>
+          <span class="eyebrow">Wasatch Front &middot; Same-day booking available</span>
+          <h1>Muscle for<br>the <span class="hl">manifest</span>,<br>done right.</h1>
+          <p class="lede">The Moving Krew provides loading and unloading labor across Utah — you bring the truck and blankets, we bring the crew and straps to fill it up and get you moving.</p>
+          <div class="hero-badges">
+            <span class="badge-row"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Licensed &amp; insured</span>
+            <span class="badge-row"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> 4.9 rating, 1,200+ moves</span>
+            <span class="badge-row"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Same-day booking</span>
+          </div>
+          <div class="hero-ctas">
+            <a href="#contact" class="btn btn-primary">Book your move</a>
+            <a href="tel:13853926973" class="btn btn-secondary">Call (385) 392-6973</a>
+          </div>
+        </div>
+
+        <div class="ticket">
+          <div class="ticket-head">
+            <span class="t-label">Job ticket</span>
+            <span class="ticket-num" id="ticketNum">No. 00184</span>
+          </div>
+          <div class="ticket-body">
+            <div class="ticket-grid">
+              <div class="ticket-row">
+                <label for="q-size">Home size</label>
+                <select id="q-size">
+                  <option value="1+">1+ bedroom</option>
+                  <option value="2+">2+ bedroom</option>
+                  <option value="3+" selected>3+ bedroom</option>
+                  <option value="4+">4+ bedroom</option>
+                </select>
+              </div>
+              <div class="ticket-row">
+                <label for="q-type">Home type <span style="text-transform:none; font-weight:400; color:var(--blanket);">(optional)</span></label>
+                <select id="q-type">
+                  <option value="">Not sure yet</option>
+                  <option value="apartment">Apartment</option>
+                  <option value="townhome">Townhome</option>
+                  <option value="house">House</option>
+                </select>
+              </div>
+            </div>
+            <div class="ticket-grid">
+              <div class="ticket-row">
+                <label for="q-hours">Est. hours needed</label>
+                <select id="q-hours">
+                  <option value="2">2 hours</option>
+                  <option value="3" selected>3 hours</option>
+                  <option value="4">4 hours</option>
+                  <option value="5">5 hours</option>
+                  <option value="6">6 hours</option>
+                  <option value="8">8 hours</option>
+                </select>
+              </div>
+              <div class="ticket-row">
+                <label for="q-crew">Crew size</label>
+                <select id="q-crew">
+                  <option value="1">1 mover</option>
+                  <option value="2">2 movers</option>
+                  <option value="3" selected>3 movers</option>
+                  <option value="4">4 movers</option>
+                </select>
+              </div>
+            </div>
+            <div class="ticket-row" style="margin-bottom:0;">
+              <label for="q-extras">Extras</label>
+              <select id="q-extras">
+                <option value="0">None</option>
+                <option value="60">Piano / safe handling</option>
+              </select>
+            </div>
+            <div class="ticket-row" style="margin-bottom:0;">
+              <p style="font-size:12.5px; color:var(--blanket); line-height:1.5;">You provide the truck and moving blankets — we bring the crew and straps to load or unload it. $45/hr per mover, $40/hr per mover on bookings of 4+ hours.</p>
+            </div>
+            <div class="ticket-estimate">
+              <span class="lbl" id="estimateHoursLbl">Est. hours &middot; 3</span>
+              <span class="num" id="estimateOut">$684</span>
+            </div>
+          </div>
+          <div class="ticket-foot">
+            <button type="button" id="ticketCta">Lock in this estimate</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="trust-strip">
+    <div class="trust-track" id="trustTrack">
+      <span>Salt Lake City</span><span>Provo</span><span>Ogden</span><span>Park City</span><span>Sandy</span><span>Lehi</span><span>St. George</span><span>Layton</span>
+      <span>Salt Lake City</span><span>Provo</span><span>Ogden</span><span>Park City</span><span>Sandy</span><span>Lehi</span><span>St. George</span><span>Layton</span>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services" class="services">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">What we haul</span>
+        <h2>Labor for every kind of move.</h2>
+        <p>You provide the truck — book by the job, not by the guess. Utah moves only, no out-of-state relocations.</p>
+      </div>
+      <div class="svc-grid">
+        <div class="svc-card reveal">
+          <div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg></div>
+          <h3>Loading &amp; unloading</h3>
+          <p>Crew loads or unloads your truck or pod, wall to wall, billed hourly per mover.</p>
+        </div>
+        <div class="svc-card reveal">
+          <div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+          <h3>Same-day booking</h3>
+          <p>Need a crew today? We take same-day requests as availability allows — call to check the schedule.</p>
+        </div>
+        <div class="svc-card reveal">
+          <div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div>
+          <h3>Packing &amp; unpacking</h3>
+          <p>Full or partial packing with commercial-grade materials, labeled by room on the manifest.</p>
+        </div>
+        <div class="svc-card reveal">
+          <div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg></div>
+          <h3>Commercial &amp; office</h3>
+          <p>After-hours and weekend office load-outs built to keep your business open Monday morning.</p>
+        </div>
+        <div class="svc-card reveal">
+          <div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/><path d="M3 12l9-9 9 9" opacity="0"/></svg></div>
+          <h3>Straps included</h3>
+          <p>Every booking includes moving straps at no separate equipment fee — just bring your own blankets.</p>
+        </div>
+        <div class="svc-card reveal">
+          <div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.5 6H21l-5 4 2 7-6-4.5L6 19l2-7-5-4h6.5z"/></svg></div>
+          <h3>Specialty items</h3>
+          <p>Pianos, gun safes, pool tables, and antiques handled with dedicated rigging equipment.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process" class="process">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">How it runs</span>
+        <h2>Four steps from quote to keys.</h2>
+        <p>No sales calls, no bait-and-switch estimate on move day. Same-day slots available.</p>
+      </div>
+      <div class="process-list">
+        <div class="proc-item reveal">
+          <span class="proc-num">Step 1</span>
+          <h3>Fill the ticket</h3>
+          <p>Tell us home size, crew size, and date. Get a written estimate in under a minute.</p>
+        </div>
+        <div class="proc-item reveal">
+          <span class="proc-num">Step 2</span>
+          <h3>Confirm the date</h3>
+          <p>We hold your slot with a card on file — no charge unless you cancel late. A crew lead calls to confirm details, even same-day.</p>
+        </div>
+        <div class="proc-item reveal">
+          <span class="proc-num">Step 3</span>
+          <h3>Krew arrives</h3>
+          <p>Crew arrives in the confirmed window with straps, and loads or unloads your truck.</p>
+        </div>
+        <div class="proc-item reveal">
+          <span class="proc-num">Step 4</span>
+          <h3>Sign off</h3>
+          <p>Walkthrough when the job's done, sign the ticket, done. You pay the quoted rate — not a cent more.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="pricing">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Flat, upfront pricing</span>
+        <h2>One rate per mover, no guessing.</h2>
+        <p>You supply the truck and moving blankets — we supply the labor and straps. Book more crew or more hours, pay the same simple rate.</p>
+      </div>
+      <div class="price-grid">
+        <div class="price-card reveal">
+          <h3>Standard rate</h3>
+          <div class="price-crew">Bookings under 4 hours</div>
+          <div class="price-num">$45<span>/hr per mover</span></div>
+          <ul>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>2-hour minimum</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>Moving straps included</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>Basic liability coverage</li>
+          </ul>
+          <a href="#contact" class="btn btn-secondary">Book standard rate</a>
+        </div>
+        <div class="price-card featured reveal">
+          <span class="price-tag">Best value</span>
+          <h3>4+ hour rate</h3>
+          <div class="price-crew">Bookings of 4 hours or more</div>
+          <div class="price-num">$40<span>/hr per mover</span></div>
+          <ul>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>$5/hr per mover discount</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>Moving straps included</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>Full liability coverage</li>
+          </ul>
+          <a href="#contact" class="btn btn-primary">Book 4+ hour rate</a>
+        </div>
+        <div class="price-card reveal">
+          <h3>Add more muscle</h3>
+          <div class="price-crew">Add movers to any booking</div>
+          <div class="price-num">+$45<span>/hr per mover</span></div>
+          <ul>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>Same hourly rate applies</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>Same-day booking available</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>Full liability coverage</li>
+          </ul>
+          <a href="#contact" class="btn btn-secondary">Ask about crew size</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="reviews" class="testimonials">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">On the record</span>
+        <h2>What the last ticket said.</h2>
+      </div>
+      <div class="test-grid">
+        <div class="test-card reveal">
+          <div class="test-stars">★★★★★</div>
+          <p>"Quoted $612, paid $612. Crew wrapped every piece of furniture and had our three-bedroom loaded in under two hours."</p>
+          <div class="test-name">Maren H.</div>
+          <div class="test-loc">Sandy, UT</div>
+        </div>
+        <div class="test-card reveal">
+          <div class="test-stars">★★★★★</div>
+          <p>"Moved our office of 30 people on a Saturday so we didn't lose a single work day. Every desk labeled and placed exactly where the floor plan said."</p>
+          <div class="test-name">Dallin R.</div>
+          <div class="test-loc">Lehi, UT</div>
+        </div>
+        <div class="test-card reveal">
+          <div class="test-stars">★★★★★</div>
+          <p>"Had a gun safe and an upright piano. They brought the right equipment and didn't scratch a single wall on the way out."</p>
+          <div class="test-name">Priya K.</div>
+          <div class="test-loc">Provo, UT</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICE AREA -->
+  <section class="area">
+    <div class="wrap area-inner">
+      <div>
+        <span class="eyebrow" style="color:var(--orange);">Service area</span>
+        <h2>Krews dispatched across the Wasatch Front.</h2>
+      </div>
+      <div class="area-cities">
+        <span>Salt Lake City</span><span>Provo</span><span>Ogden</span><span>Park City</span>
+        <span>Sandy</span><span>Lehi</span><span>Draper</span><span>Layton</span>
+        <span>American Fork</span><span>Orem</span><span>Murray</span><span>St. George</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <span class="eyebrow">Get your quote</span>
+          <h2>Ready to write the ticket?</h2>
+          <p>Send your move details and we'll get back to you with a locked estimate within one business hour.</p>
+
+          <div class="info-row">
+            <div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+            <div><div class="lbl">Call or text</div><div class="val">(385) 392-6973</div></div>
+          </div>
+          <div class="info-row">
+            <div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z" opacity="0"/><path d="M22 6l-10 7L2 6"/><path d="M2 6h20v12H2z"/></svg></div>
+            <div><div class="lbl">Email</div><div class="val">book@themovingkrew.com</div></div>
+          </div>
+          <div class="info-row">
+            <div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
+            <div><div class="lbl">Based in</div><div class="val">Salt Lake City, UT</div></div>
+          </div>
+          <div class="info-row">
+            <div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+            <div><div class="lbl">Hours</div><div class="val">Mon–Sat, 7am–7pm</div></div>
+          </div>
+        </div>
+
+        <div class="form-card reveal" id="contactCard">
+          <h3>Request your estimate</h3>
+          <form id="contactForm" novalidate>
+            <div class="f-row-2">
+              <div class="f-row" id="f-name">
+                <label for="c-name">Full name</label>
+                <input type="text" id="c-name" placeholder="Jordan Smith">
+                <div class="f-error">Enter your name.</div>
+              </div>
+              <div class="f-row" id="f-phone">
+                <label for="c-phone">Phone</label>
+                <input type="tel" id="c-phone" placeholder="(385) 555-0100">
+                <div class="f-error">Enter a valid phone number.</div>
+              </div>
+            </div>
+            <div class="f-row" id="f-email">
+              <label for="c-email">Email</label>
+              <input type="email" id="c-email" placeholder="jordan@email.com">
+              <div class="f-error">Enter a valid email address.</div>
+            </div>
+            <div class="f-row-2">
+              <div class="f-row" id="f-from">
+                <label for="c-from">Moving from (zip)</label>
+                <input type="text" id="c-from" placeholder="84101">
+                <div class="f-error">Enter a starting zip code.</div>
+              </div>
+              <div class="f-row" id="f-to">
+                <label for="c-to">Moving to (zip)</label>
+                <input type="text" id="c-to" placeholder="84604">
+                <div class="f-error">Enter a destination zip code.</div>
+              </div>
+            </div>
+            <div class="f-row" id="f-date">
+              <label for="c-date">Preferred move date</label>
+              <input type="date" id="c-date">
+              <div class="f-error">Choose a move date.</div>
+            </div>
+            <div class="f-row" id="f-notes">
+              <label for="c-notes">Notes <span style="text-transform:none; font-weight:400;">(optional)</span></label>
+              <textarea id="c-notes" placeholder="Anything we should know — stairs, elevator, oversized items..."></textarea>
+            </div>
+            <button type="submit" class="form-submit">Send request</button>
+          </form>
+          <div class="form-success" id="formSuccess">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+            <span>Ticket received. We'll call or text within one business hour to confirm your estimate.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Fine print, plainly stated</span>
+        <h2>Common questions.</h2>
+      </div>
+      <div class="faq-list reveal">
+        <div class="faq-item">
+          <button class="faq-q"><span>Do you provide the truck?</span><span class="plus">+</span></button>
+          <div class="faq-a"><p>No — we're a labor-only crew. You provide the truck, trailer, or pod along with your own moving blankets, and we bring the movers and straps to load or unload it. Rent your truck ahead of time and we'll fill it up.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>Do you handle out-of-state or long-distance moves?</span><span class="plus">+</span></button>
+          <div class="faq-a"><p>We only work moves within Utah. If your move crosses state lines, we can still load or unload your truck on the Utah end, but we don't drive it out of state.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>Can I book a crew for today?</span><span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes — we take same-day bookings as crew availability allows. Call or text as early in the day as you can to lock in a same-day slot.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>Do I need to pay a deposit to book?</span><span class="plus">+</span></button>
+          <div class="faq-a"><p>We hold a card on file to confirm your slot, but you're not charged until the job's done and you've signed off on the ticket — unless you cancel outside our cancellation window (see below).</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>What's your cancellation policy?</span><span class="plus">+</span></button>
+          <div class="faq-a"><p>Cancel or reschedule more than 24 hours before your booking and there's no charge. Cancellations inside 24 hours, or no-shows, are charged a $40 fee to the card on file — that slot could have gone to another customer, and the fee helps cover the crew's lost time.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>How does the 4-hour discount work?</span><span class="plus">+</span></button>
+          <div class="faq-a"><p>Every mover is billed at $45/hr for bookings under 4 hours. Book 4 hours or more and the rate drops to $40/hr per mover for the entire job.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>Do you move pianos or safes?</span><span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes — add "Piano / safe handling" on your quote ticket. We bring dedicated rigging equipment and additional crew for anything over 400 lbs.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col">
+        <div class="foot-logo"><span class="logo-mark">TK</span>The Moving Krew</div>
+        <p>Licensed, insured, and locally operated across the Wasatch Front. Flat pricing, no surprises on move day.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#process">How it works</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">Loading &amp; unloading</a></li>
+          <li><a href="#services">Same-day booking</a></li>
+          <li><a href="#services">Packing</a></li>
+          <li><a href="#services">Specialty items</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:13853926973">(385) 392-6973</a></li>
+          <li><a href="mailto:book@themovingkrew.com">book@themovingkrew.com</a></li>
+          <li><a href="#contact">Get a quote</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>&copy; 2026 The Moving Krew. All rights reserved.</span>
+      <span>USDOT No. 000000 &middot; Utah PSC Permit No. 00000</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Mobile nav
+const mobileToggle = document.getElementById('mobileToggle');
+const mobileNav = document.getElementById('mobileNav');
+mobileToggle.addEventListener('click', () => {
+  mobileNav.classList.toggle('open');
+});
+mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileNav.classList.remove('open')));
+
+// Toast helper
+const toastEl = document.getElementById('toast');
+let toastTimer;
+function showToast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3200);
+}
+
+// Quote calculator — flat per-mover labor rate, $45/hr standard, $40/hr on 4+ hour bookings
+const qHours = document.getElementById('q-hours');
+const qCrew = document.getElementById('q-crew');
+const qExtras = document.getElementById('q-extras');
+const estimateOut = document.getElementById('estimateOut');
+const estimateHoursLbl = document.getElementById('estimateHoursLbl');
+
+const STANDARD_RATE = 45;
+const DISCOUNT_RATE = 40;
+const DISCOUNT_THRESHOLD_HOURS = 4;
+
+function calcEstimate(){
+  const hours = parseInt(qHours.value, 10);
+  const crew = parseInt(qCrew.value, 10);
+  const extras = parseInt(qExtras.value, 10);
+
+  const rate = hours >= DISCOUNT_THRESHOLD_HOURS ? DISCOUNT_RATE : STANDARD_RATE;
+  const laborCost = hours * crew * rate;
+  const total = laborCost + extras;
+
+  estimateHoursLbl.textContent = 'Est. hours \u00b7 ' + hours;
+  estimateOut.textContent = '$' + Math.round(total).toLocaleString();
+}
+[qHours, qCrew, qExtras].forEach(el => el.addEventListener('input', calcEstimate));
+calcEstimate();
+
+document.getElementById('ticketCta').addEventListener('click', () => {
+  document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+  showToast('Estimate carried over — finish the request below.');
+});
+
+// Random ticket number for flavor
+document.getElementById('ticketNum').textContent = 'No. ' + (10000 + Math.floor(Math.random() * 89999));
+
+// FAQ accordion
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.querySelector('.faq-q').addEventListener('click', () => {
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if(!wasOpen) item.classList.add('open');
+  });
+});
+
+// Contact form validation
+const form = document.getElementById('contactForm');
+const formSuccess = document.getElementById('formSuccess');
+const contactCard = document.getElementById('contactCard');
+
+function setInvalid(rowId, invalid){
+  const row = document.getElementById(rowId);
+  row.classList.toggle('invalid', invalid);
+}
+
+function validPhone(v){ return /^[\d\s()+\-]{7,}$/.test(v.trim()); }
+function validEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); }
+function validZip(v){ return /^\d{5}$/.test(v.trim()); }
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  let valid = true;
+
+  const name = document.getElementById('c-name').value;
+  const phone = document.getElementById('c-phone').value;
+  const email = document.getElementById('c-email').value;
+  const from = document.getElementById('c-from').value;
+  const to = document.getElementById('c-to').value;
+  const date = document.getElementById('c-date').value;
+
+  if(name.trim().length < 2){ setInvalid('f-name', true); valid = false; } else setInvalid('f-name', false);
+  if(!validPhone(phone)){ setInvalid('f-phone', true); valid = false; } else setInvalid('f-phone', false);
+  if(!validEmail(email)){ setInvalid('f-email', true); valid = false; } else setInvalid('f-email', false);
+  if(!validZip(from)){ setInvalid('f-from', true); valid = false; } else setInvalid('f-from', false);
+  if(!validZip(to)){ setInvalid('f-to', true); valid = false; } else setInvalid('f-to', false);
+  if(!date){ setInvalid('f-date', true); valid = false; } else setInvalid('f-date', false);
+
+  if(!valid){
+    showToast('Check the highlighted fields.');
+    return;
+  }
+
+  contactCard.classList.add('submitted');
+  formSuccess.classList.add('show');
+  showToast('Request sent — ticket logged.');
+});
+
+// Scroll reveal
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add('in');
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+revealEls.forEach(el => io.observe(el));
+
+// Set min date on date input to today
+document.getElementById('c-date').min = new Date().toISOString().split('T')[0];
+</script>
+
+</body>
+</html>
